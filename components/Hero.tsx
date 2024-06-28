@@ -47,12 +47,13 @@ const Hero = () => {
             Web 2, 2.5, 3 & Beyond 🚀
           </p>
 
-          
-          <TextRevealCard
-            text="ENVY NOTHING"
-            revealText="BUILD"
-            className="text-center text-[40px] md:text-5xl lg:text-6xl"
-          />
+          <div className="w-full flex justify-right">
+            <TextRevealCard
+              text="ENVY NOTHING"
+              revealText="BUILD"
+              className="text-center"
+            />
+          </div>
 
           <p className="text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
             Greetings! I&apos;m Matt, a Full-Stack/Blockchain Engineer in SoCal.
