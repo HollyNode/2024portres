@@ -91,7 +91,7 @@ export const navItems = [
         des: "From Poem to Literature to App to LLM. A modern retro homage to a literary giant",
         img: "/p3.png",
         iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/aceturnity.png", "/ipfs.png"],
-        link: "https://www.infernal-nfts.xyz",
+        link: "https://dip-one.vercel.app/intro",
     },
     {
         id: 4,
