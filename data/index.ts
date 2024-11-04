@@ -109,6 +109,14 @@ export const navItems = [
       iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/aceturnity.png", "/midj-icon.png"],
       link: "https://hp-ol.vercel.app/",
   },
+  {
+    id: 6,
+    title: "Nexus Libris",
+    des: "Sources have a source.",
+    img: "/p6.png",
+    iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/aceturnity.png", "/Neo4j.jpg"],
+    link: "https://nexuslibris.xyz",
+},
 ];
   
   export const testimonials = [
