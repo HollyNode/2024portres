@@ -1,19 +1,29 @@
 'use client';
 
 import React from 'react';
-import { ArrowRight, Sparkles, Code, Zap, Globe, Rocket } from 'lucide-react';
- import{ MagicButton  }from './ui/MagicButton';
+import { ArrowRight, Sparkles, Code, Zap, Globe } from 'lucide-react';
+// import MagicButton from './ui/MagicButton';
 // import { Spotlight } from './ui/Spotlight';
-import  { TextRevealCard }  from './ui/text-reveal-card';
+// import { TextRevealCard } from './ui/text-reveal-card';
 
 // Temporary fallback components for debugging
-
+const MagicButton = ({ title, icon, position, handleClick, otherClasses }: any) => (
+  <button onClick={handleClick} className={`px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${otherClasses}`}>
+    {title} {icon}
+  </button>
+);
 
 const Spotlight = ({ className, fill }: any) => (
   <div className={`absolute ${className}`} style={{ background: `radial-gradient(circle, ${fill}20 0%, transparent 70%)` }} />
 );
 
-
+const TextRevealCard = ({ text, revealText, className }: any) => (
+  <div className={`text-2xl font-bold mb-4 ${className}`}>
+    <span className="text-gray-400">{text}</span>
+    <br />
+    <span className="text-white">{revealText}</span>
+  </div>
+);
 
 const Hero = () => {
   return (
@@ -38,29 +48,10 @@ const Hero = () => {
           
           {/* Badge */}
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-300 backdrop-blur-sm animate-fade-in">
-               <Sparkles className="h-4 w-4" />
+            <Sparkles className="h-4 w-4" />
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Web 2, 2.5, 3 & Beyond
+              Web 2, 2.5, 3 & Beyond 🚀
             </span>
-            
-            {/* Animated Rocket */}
-            <div className="relative">
-              <Rocket className="h-4 w-4 text-orange-400 animate-rocket-launch group-hover:animate-rocket-boost transition-all duration-300" />
-              
-              {/* Rocket Trail Effect */}
-              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0.5 h-3 bg-gradient-to-t from-orange-400/60 via-yellow-400/40 to-transparent animate-rocket-trail opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              {/* Sparkle Trail */}
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                <div className="w-1 h-1 bg-orange-300 rounded-full animate-sparkle-1 opacity-0 group-hover:opacity-100" />
-              </div>
-              <div className="absolute -bottom-3 left-1/2 transform">
-                <div className="w-0.5 h-0.5 bg-yellow-300 rounded-full animate-sparkle-2 opacity-0 group-hover:opacity-100" />
-              </div>
-              <div className="absolute -bottom-3 left-1/2 transform ">
-                <div className="w-0.5 h-0.5 bg-orange-200 rounded-full animate-sparkle-3 opacity-0 group-hover:opacity-100" />
-              </div>
-            </div>
           </div>
 
           {/* Main Heading with Text Reveal Effect */}
@@ -71,12 +62,16 @@ const Hero = () => {
               className="mx-auto mb-4"
             />
             
-            
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl animate-slide-up-delayed">
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-orange-400 bg-clip-text text-transparent">
+                Code the Future
+              </span>
+            </h1>
           </div>
 
           {/* Subtitle */}
           <p className="mx-auto mb-12 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl animate-fade-in-delayed">
-            Greetings! I'm <span className="font-semibold text-white">Matt</span>, a Full-Stack/Blockchain Engineer in SoCal.
+            Greetings! I&apos;m <span className="font-semibold text-white">Matt</span>, a Full-Stack/Blockchain Engineer in SoCal.
             <br />
             <span className="text-slate-400">Crafting digital experiences that push boundaries.</span>
           </p>
@@ -99,13 +94,13 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6 animate-fade-in-most-delayed">
-           <MagicButton
-  title="View My Work"
-  icon={<ArrowRight className="h-4 w-4" />}
-  position="right"
-  onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-  className="primary"
-/>
+            <MagicButton
+              title="View My Work"
+              icon={<ArrowRight className="h-4 w-4" />}
+              position="right"
+              handleClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+              otherClasses="primary"
+            />
             
             <button className="group relative overflow-hidden rounded-full border border-slate-700 bg-transparent px-8 py-3 text-slate-300 transition-all duration-300 hover:border-slate-500 hover:text-white">
               <span className="relative z-10 flex items-center gap-2 font-medium">
