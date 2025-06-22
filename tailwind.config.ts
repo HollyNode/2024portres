@@ -81,6 +81,11 @@ const config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      // Add background size utility for gradient animations
+      backgroundSize: {
+        '200': '200% 200%',
+        '300': '300% 300%',
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -107,6 +112,85 @@ const config = {
           to: {
             backgroundPosition: "-200% 0",
           },
+        },
+        // Hero component animations
+        'gradient-x': {
+          '0%, 100%': {
+            'background-size': '200% 200%',
+            'background-position': 'left center'
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center'
+          },
+        },
+        'fade-in': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(20px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+        'fade-in-delayed': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(20px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+        'slide-up-delayed': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(40px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+        // Rocket animations
+        'rocket-launch': {
+          '0%': { 
+            transform: 'translateY(0) rotate(0deg)' 
+          },
+          '100%': { 
+            transform: 'translateY(-2px) rotate(-5deg)' 
+          }
+        },
+        'rocket-boost': {
+          '0%, 100%': { 
+            transform: 'translateY(-2px) rotate(-5deg) scale(1)' 
+          },
+          '50%': { 
+            transform: 'translateY(-4px) rotate(-8deg) scale(1.1)' 
+          }
+        },
+        'rocket-trail': {
+          '0%': {
+            opacity: '0',
+            height: '0px'
+          },
+          '100%': {
+            opacity: '1',
+            height: '12px'
+          }
+        },
+        // Sparkle animations
+        'sparkle': {
+          '0%, 100%': { 
+            opacity: '0', 
+            transform: 'scale(0)' 
+          },
+          '50%': { 
+            opacity: '1', 
+            transform: 'scale(1)' 
+          }
         },
         moveHorizontal: {
           "0%": {
@@ -152,6 +236,26 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         spotlight: "spotlight 2s ease .75s 1 forwards",
         shimmer: "shimmer 2s linear infinite",
+        
+        // Hero component animations
+        'gradient-x': 'gradient-x 15s ease infinite',
+        'fade-in': 'fade-in 1s ease-out 0.2s both',
+        'fade-in-delayed': 'fade-in 1s ease-out 0.8s both',
+        'fade-in-more-delayed': 'fade-in 1s ease-out 1.2s both',
+        'fade-in-most-delayed': 'fade-in 1s ease-out 1.6s both',
+        'slide-up-delayed': 'slide-up-delayed 1s ease-out 0.6s both',
+        
+        // Rocket animations
+        'rocket-launch': 'rocket-launch 0.5s ease-out',
+        'rocket-boost': 'rocket-boost 0.3s ease-out infinite',
+        'rocket-trail': 'rocket-trail 0.5s ease-out infinite',
+        
+        // Sparkle animations
+        'sparkle-1': 'sparkle 1s ease-out infinite',
+        'sparkle-2': 'sparkle 1.2s ease-out infinite 0.2s',
+        'sparkle-3': 'sparkle 1.4s ease-out infinite 0.4s',
+        
+        // Existing animations
         first: "moveVertical 30s ease infinite",
         second: "moveInCircle 20s reverse infinite",
         third: "moveInCircle 40s linear infinite",
@@ -159,6 +263,16 @@ const config = {
         fifth: "moveInCircle 20s ease infinite",
         scroll:
           "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+      },
+      // Add animation delays
+      animationDelay: {
+        '100': '100ms',
+        '200': '200ms',
+        '300': '300ms',
+        '500': '500ms',
+        '700': '700ms',
+        '1000': '1000ms',
+        '2000': '2000ms',
       },
     },
   },
@@ -186,6 +300,17 @@ const config = {
         },
         { values: flattenColorPalette(theme("backgroundColor")), type: "color" }
       );
+    },
+    // Add animation delay utilities
+    function ({ addUtilities, theme }: any) {
+      const delays = theme('animationDelay');
+      const delayUtilities = Object.entries(delays).reduce((acc: any, [key, value]) => {
+        acc[`.delay-${key}`] = {
+          'animation-delay': value,
+        };
+        return acc;
+      }, {});
+      addUtilities(delayUtilities);
     },
   ],
 } satisfies Config;

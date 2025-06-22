@@ -1,187 +1,171 @@
-"use client";
-import React, { useEffect, useRef, useState, memo } from "react";
-import { motion } from "framer-motion";
-import { twMerge } from "tailwind-merge";
-import { cn } from "@/utils/cn";
+'use client';
 
-export const TextRevealCard = ({
-  text,
-  revealText,
-  children,
-  className,
-}: {
+import React, { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils'; // Use consistent import path
+
+interface TextRevealCardProps {
   text: string;
   revealText: string;
-  children?: React.ReactNode;
   className?: string;
+}
+
+interface Particle {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  opacity: number;
+  delay: number;
+  duration: number;
+}
+
+export const TextRevealCard: React.FC<TextRevealCardProps> = ({
+  text,
+  revealText,
+  className,
 }) => {
-  const [widthPercentage, setWidthPercentage] = useState(0);
-  const cardRef = useRef<HTMLDivElement | any>(null);
-  const [left, setLeft] = useState(0);
-  const [localWidth, setLocalWidth] = useState(0);
-  const [isMouseOver, setIsMouseOver] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(false);
+  const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
-    if (cardRef.current) {
-      const { left, width: localWidth } =
-        cardRef.current.getBoundingClientRect();
-      setLeft(left);
-      setLocalWidth(localWidth);
-    }
+    // Generate sparkle particles
+    const generateParticles = () => {
+      const newParticles: Particle[] = [];
+      for (let i = 0; i < 20; i++) {
+        newParticles.push({
+          id: i,
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          size: Math.random() * 4 + 2,
+          opacity: Math.random() * 0.8 + 0.2,
+          delay: Math.random() * 2000,
+          duration: Math.random() * 3000 + 2000,
+        });
+      }
+      setParticles(newParticles);
+    };
+
+    generateParticles();
+
+    // Start the reveal animation
+    const timer = setTimeout(() => {
+      setIsRevealed(true);
+    }, 1500);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  function mouseMoveHandler(event: any) {
-    event.preventDefault();
-
-    const { clientX } = event;
-    if (cardRef.current) {
-      const relativeX = clientX - left;
-      setWidthPercentage((relativeX / localWidth) * 100);
-    }
-  }
-
-  function mouseLeaveHandler() {
-    setIsMouseOver(false);
-    setWidthPercentage(0);
-  }
-  function mouseEnterHandler() {
-    setIsMouseOver(true);
-  }
-  function touchMoveHandler(event: React.TouchEvent<HTMLDivElement>) {
-    event.preventDefault();
-    const clientX = event.touches[0]!.clientX;
-    if (cardRef.current) {
-      const relativeX = clientX - left;
-      setWidthPercentage((relativeX / localWidth) * 100);
-    }
-  }
-
-  const rotateDeg = (widthPercentage - 50) * 0.1;
   return (
-    <div
-      onMouseEnter={mouseEnterHandler}
-      onMouseLeave={mouseLeaveHandler}
-      onMouseMove={mouseMoveHandler}
-      onTouchStart={mouseEnterHandler}
-      onTouchEnd={mouseLeaveHandler}
-      onTouchMove={touchMoveHandler}
-      ref={cardRef}
-      className={cn(
-        "  border-white/[0.08] w-[40rem] rounded-lg p-8 relative overflow-hidden",
-        className
-      )}
-    >
-      {children}
-
-      <div className="h-40  relative flex items-center overflow-hidden">
-        <motion.div
-          style={{
-            width: "100%",
-          }}
-          animate={
-            isMouseOver
-              ? {
-                  opacity: widthPercentage > 0 ? 1 : 0,
-                  clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
-                }
-              : {
-                  clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
-                }
-          }
-          transition={isMouseOver ? { duration: 0 } : { duration: 0.4 }}
-          className="absolute bg-[#1d1c20] z-20  will-change-transform"
-        >
-          <p
-            style={{
-              textShadow: "4px 4px 15px rgba(0,0,0,0.5)",
-            }}
-            className="text-base sm:text-[3rem] py-10 font-bold text-white bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-300"
-          >
-            {revealText}
-          </p>
-        </motion.div>
-        <motion.div
-          animate={{
-            left: `${widthPercentage}%`,
-            rotate: `${rotateDeg}deg`,
-            opacity: widthPercentage > 0 ? 1 : 0,
-          }}
-          transition={isMouseOver ? { duration: 0 } : { duration: 0.4 }}
-          className="h-40 w-[8px] bg-gradient-to-b from-transparent via-neutral-800 to-transparent absolute z-50 will-change-transform"
-        ></motion.div>
-
-        <div className=" overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,white,transparent)]">
-          <p className="text-base sm:text-[3rem] py-10 font-bold bg-clip-text text-transparent bg-[#323238]">
-            {text}
-          </p>
-          <MemoizedStars />
+    <div className={cn("relative overflow-hidden", className)}>
+      <div className="relative h-32 w-full cursor-pointer select-none rounded-2xl border border-slate-700/50 bg-slate-900/30 p-8 backdrop-blur-sm transition-all duration-500 hover:border-slate-600/50 hover:bg-slate-900/40">
+        
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:20px_20px]" />
+        
+        {/* Sparkle Particles */}
+        <div className="absolute inset-0 overflow-hidden rounded-2xl">
+          {particles.map((particle) => (
+            <div
+              key={particle.id}
+              className={cn(
+                "absolute w-1 h-1 bg-white rounded-full transition-all duration-1000 ease-out",
+                isRevealed ? "opacity-100 scale-100" : "opacity-0 scale-0"
+              )}
+              style={{
+                left: `${particle.x}%`,
+                top: `${particle.y}%`,
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+                animationDelay: `${particle.delay}ms`,
+                animationDuration: `${particle.duration}ms`,
+                background: `radial-gradient(circle, rgba(147, 197, 253, ${particle.opacity}) 0%, rgba(196, 181, 253, ${particle.opacity * 0.8}) 50%, rgba(251, 146, 60, ${particle.opacity * 0.6}) 100%)`,
+                boxShadow: `0 0 ${particle.size * 2}px rgba(147, 197, 253, ${particle.opacity * 0.5})`,
+              }}
+            />
+          ))}
         </div>
+
+        {/* Main Text Container */}
+        <div className="relative z-10 flex items-center justify-center h-full">
+          
+          {/* Original Text */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-center tracking-wide">
+              <span className="inline-block overflow-hidden">
+                {text.split('').map((char, index) => (
+                  <span
+                    key={index}
+                    className={cn(
+                      "inline-block transition-all duration-700 ease-out",
+                      isRevealed 
+                        ? "transform translate-y-full opacity-0 blur-sm" 
+                        : "transform translate-y-0 opacity-100 blur-0"
+                    )}
+                    style={{
+                      transitionDelay: `${index * 50}ms`,
+                    }}
+                  >
+                    <span className="bg-gradient-to-r from-slate-400 to-slate-200 bg-clip-text text-transparent">
+                      {char === ' ' ? '\u00A0' : char}
+                    </span>
+                  </span>
+                ))}
+              </span>
+            </h2>
+          </div>
+
+          {/* Reveal Text */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-center tracking-wide">
+              <span className="inline-block overflow-hidden">
+                {revealText.split('').map((char, index) => (
+                  <span
+                    key={index}
+                    className={cn(
+                      "inline-block transition-all duration-700 ease-out",
+                      isRevealed 
+                        ? "transform translate-y-0 opacity-100 blur-0" 
+                        : "transform translate-y-full opacity-0 blur-sm"
+                    )}
+                    style={{
+                      transitionDelay: `${index * 80 + 300}ms`,
+                    }}
+                  >
+                    <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-orange-400 bg-clip-text text-transparent animate-gradient-x bg-size-200">
+                      {char === ' ' ? '\u00A0' : char}
+                    </span>
+                  </span>
+                ))}
+              </span>
+            </h2>
+          </div>
+        </div>
+
+        {/* Animated Border Glow */}
+        <div 
+          className={cn(
+            "absolute inset-0 rounded-2xl transition-all duration-1000 ease-out",
+            isRevealed 
+              ? "bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-orange-500/20 opacity-100" 
+              : "opacity-0"
+          )}
+        />
+
+        {/* Shimmer Effect */}
+        <div 
+          className={cn(
+            "absolute inset-0 rounded-2xl transition-all duration-1000 ease-out",
+            isRevealed && "animate-shimmer"
+          )}
+          style={{
+            background: isRevealed 
+              ? 'linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%)'
+              : 'transparent',
+            backgroundSize: '200% 200%',
+          }}
+        />
+        
       </div>
     </div>
   );
 };
-
-export const TextRevealCardTitle = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <h2 className={twMerge("text-white text-lg mb-2", className)}>
-      {children}
-    </h2>
-  );
-};
-
-export const TextRevealCardDescription = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <p className={twMerge("text-[#a9a9a9] text-sm", className)}>{children}</p>
-  );
-};
-
-const Stars = () => {
-  const randomMove = () => Math.random() * 4 - 2;
-  const randomOpacity = () => Math.random();
-  const random = () => Math.random();
-  return (
-    <div className="absolute inset-0">
-      {[...Array(80)].map((_, i) => (
-        <motion.span
-          key={`star-${i}`}
-          animate={{
-            top: `calc(${random() * 100}% + ${randomMove()}px)`,
-            left: `calc(${random() * 100}% + ${randomMove()}px)`,
-            opacity: randomOpacity(),
-            scale: [1, 1.2, 0],
-          }}
-          transition={{
-            duration: random() * 10 + 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          style={{
-            position: "absolute",
-            top: `${random() * 100}%`,
-            left: `${random() * 100}%`,
-            width: `2px`,
-            height: `2px`,
-            backgroundColor: "white",
-            borderRadius: "50%",
-            zIndex: 1,
-          }}
-          className="inline-block"
-        ></motion.span>
-      ))}
-    </div>
-  );
-};
-
-export const MemoizedStars = memo(Stars);

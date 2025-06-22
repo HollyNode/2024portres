@@ -86,4 +86,122 @@
   .black-gradient {
     background: linear-gradient(90deg, #161a31 0%, #06091f 100%);
   }
+
+  /* Background size utilities for gradient animations */
+  .bg-size-200 {
+    background-size: 200% 200%;
+  }
+  
+  .bg-size-300 {
+    background-size: 300% 300%;
+  }
+
+  /* Text gradient utilities */
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-400 via-purple-400 to-orange-400 bg-clip-text text-transparent;
+  }
+
+  /* Grid pattern utilities */
+  .bg-grid-white\/\[0\.02\] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='60' height='60' fill='none' stroke='rgb(255 255 255 / 0.02)'%3e%3cpath d='m0 .5h31.5v31.5'/%3e%3c/svg%3e");
+  }
+
+  /* Animation delay utilities (backup) */
+  .delay-1000 {
+    animation-delay: 1000ms;
+  }
+  
+  .delay-2000 {
+    animation-delay: 2000ms;
+  }
+
+  /* Scrollbar utilities */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Custom gradient animation utility */
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 15s ease infinite;
+  }
+}
+
+/* Additional keyframes for Hero component animations */
+@keyframes gradient-x {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up-delayed {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rocket-launch {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-2px) rotate(-5deg);
+  }
+}
+
+@keyframes rocket-boost {
+  0%, 100% {
+    transform: translateY(-2px) rotate(-5deg) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) rotate(-8deg) scale(1.1);
+  }
+}
+
+@keyframes rocket-trail {
+  0% {
+    opacity: 0;
+    height: 0px;
+  }
+  100% {
+    opacity: 1;
+    height: 12px;
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { BackgroundGradientAnimation } from "./GradientBg";
 import GridGlobe from "./GridGlobe";
 import animationData from "@/data/confetti.json";
-import MagicButton from "../ui/MagicButton";
+import { MagicButton } from "../ui/MagicButton";
 
 export const BentoGrid = ({
   className,
@@ -186,12 +186,12 @@ export const BentoGridItem = ({
               </div>
 
               <MagicButton
-                title={copied ? "Email is Copied!" : "Copy my email address"}
-                icon={<IoCopyOutline />}
-                position="left"
-                handleClick={handleCopy}
-                otherClasses="!bg-[#161A31]"
-              />
+  title={copied ? "Email is Copied!" : "Copy my email address"}
+  icon={<IoCopyOutline />}
+  position="left"
+  onClick={handleCopy}
+  className="!bg-[#161A31]"
+/>
             </div>
           )}
         </div>
