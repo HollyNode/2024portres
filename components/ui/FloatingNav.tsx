@@ -52,6 +52,61 @@ export const themes: Theme[] = [
   }
 ];
 
+// Theme-specific nav styles
+const getNavStyles = (theme: ThemeVersion) => {
+  switch (theme) {
+    case 'mickey':
+      return {
+        container: "bg-white border-4 border-black rounded-[50px] shadow-[8px_8px_0px_#000]",
+        backdrop: "none",
+        link: "text-black font-bold uppercase tracking-[2px] underline hover:text-purple-600 hover:bg-yellow-400 hover:no-underline transition-all",
+        button: "bg-black text-white border-3 border-black rounded-[25px] font-bold shadow-[4px_4px_0px_#333] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#333]",
+        dropdown: "bg-white border-4 border-black rounded-[20px] shadow-[8px_8px_0px_#000]",
+        dropdownButton: "hover:bg-gray-100 border-2 border-transparent hover:border-black hover:shadow-[2px_2px_0px_#333]"
+      };
+    
+    case 'cyberpunk':
+      return {
+        container: "bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-cyan-500/20 border-2 border-cyan-400 rounded-none shadow-[0_0_20px_rgba(0,255,255,0.5)] backdrop-blur-[10px]",
+        backdrop: "blur(10px) saturate(200%)",
+        link: "text-cyan-400 font-semibold uppercase tracking-[2px] font-mono text-shadow-[0_0_10px_currentColor] hover:text-purple-400 hover:animate-pulse transition-all",
+        button: "bg-gradient-to-r from-purple-500 to-cyan-500 text-black border-2 border-green-400 rounded-none font-bold shadow-[0_0_15px_rgba(0,255,255,0.7)] hover:shadow-[0_0_25px_rgba(255,0,255,0.9)] hover:animate-spin",
+        dropdown: "bg-gradient-to-b from-purple-900/95 to-slate-900/95 border-2 border-purple-500 rounded-none shadow-[0_0_30px_rgba(255,0,255,0.6)] backdrop-blur-[15px]",
+        dropdownButton: "hover:bg-gradient-to-r hover:from-cyan-500/20 hover:to-purple-500/20 border border-transparent hover:border-cyan-400 hover:shadow-[0_0_10px_rgba(0,255,255,0.5)]"
+      };
+    
+    case 'transformers':
+      return {
+        container: "bg-gradient-to-r from-yellow-500/20 via-slate-700/90 to-red-500/20 border-3 border-yellow-500 rounded-none shadow-[0_0_20px_rgba(255,215,0,0.4),0_4px_0px_#ff8800,0_6px_8px_rgba(0,0,0,0.3)] backdrop-blur-[10px]",
+        backdrop: "blur(10px)",
+        link: "text-yellow-500 font-bold uppercase tracking-[2px] font-mono text-shadow-[0_0_10px_#ffd700,2px_2px_0px_#000] hover:text-red-500 hover:animate-pulse transition-all",
+        button: "bg-gradient-to-r from-yellow-500 to-orange-500 text-black border-3 border-red-500 rounded-none font-bold shadow-[0_0_15px_rgba(255,68,68,0.6),0_4px_0px_#cc3333,0_6px_8px_rgba(0,0,0,0.3)] hover:shadow-[0_0_25px_rgba(255,215,0,0.8)] hover:animate-bounce",
+        dropdown: "bg-gradient-to-b from-slate-700/95 to-slate-800/95 border-3 border-yellow-500 rounded-none shadow-[0_0_30px_rgba(255,215,0,0.6),0_8px_0px_#ff8800,0_12px_16px_rgba(0,0,0,0.4)] backdrop-blur-[15px]",
+        dropdownButton: "hover:bg-gradient-to-r hover:from-yellow-500/20 hover:to-red-500/20 border-2 border-transparent hover:border-red-500 hover:shadow-[0_0_10px_rgba(255,68,68,0.5)]"
+      };
+    
+    case 'retro90s':
+      return {
+        container: "bg-silver border-3 border-gray-500 rounded-none shadow-[2px_2px_4px_#808080] border-outset",
+        backdrop: "none",
+        link: "text-blue-600 font-bold uppercase tracking-[1px] underline hover:text-purple-600 hover:bg-yellow-400 hover:no-underline transition-none",
+        button: "bg-gradient-to-b from-white to-silver text-black border-2 border-gray-500 rounded-none font-bold shadow-[1px_1px_2px_#808080] uppercase px-2 py-1 hover:bg-gradient-to-b hover:from-yellow-400 hover:to-purple-500 hover:border-inset",
+        dropdown: "bg-white border-3 border-gray-500 rounded-none shadow-[3px_3px_6px_#808080] border-outset",
+        dropdownButton: "hover:bg-blue-600 hover:text-white border border-transparent hover:border-gray-700"
+      };
+    
+    default: // current
+      return {
+        container: "bg-black/75 border border-white/20 rounded-lg shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1)] backdrop-blur-[16px]",
+        backdrop: "blur(16px) saturate(180%)",
+        link: "text-neutral-600 dark:text-neutral-50 hover:text-neutral-500 dark:hover:text-neutral-300 transition-all",
+        button: "bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-lg transition-all",
+        dropdown: "bg-black/90 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl",
+        dropdownButton: "hover:bg-white/10 border border-transparent"
+      };
+  }
+};
+
 export const FloatingNav = ({
   navItems,
   className,
@@ -82,7 +137,7 @@ export const FloatingNav = ({
           setVisible(true);
         } else {
           setVisible(false);
-          setShowThemeDropdown(false); // Close dropdown when nav hides
+          setShowThemeDropdown(false);
         }
       }
     }
@@ -94,6 +149,7 @@ export const FloatingNav = ({
   };
 
   const currentThemeData = themes.find(t => t.id === currentTheme) || themes[0];
+  const navStyles = getNavStyles(currentTheme);
 
   return (
     <AnimatePresence mode="wait">
@@ -110,14 +166,12 @@ export const FloatingNav = ({
           duration: 0.2,
         }}
         className={cn(
-          "flex max-w-fit md:min-w-[70vw] lg:min-w-fit fixed z-[5000] top-10 inset-x-0 mx-auto px-10 py-5 rounded-lg border border-black/.1 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] items-center justify-center space-x-4",
+          "flex max-w-fit md:min-w-[70vw] lg:min-w-fit fixed z-[5000] top-10 inset-x-0 mx-auto px-10 py-5 items-center justify-center space-x-4",
+          navStyles.container,
           className
         )}
         style={{
-          backdropFilter: "blur(16px) saturate(180%)",
-          backgroundColor: "rgba(17, 25, 40, 0.75)",
-          borderRadius: "12px",
-          border: "1px solid rgba(255, 255, 255, 0.125)",
+          backdropFilter: navStyles.backdrop,
         }}
       >
         {/* Navigation Items */}
@@ -126,11 +180,14 @@ export const FloatingNav = ({
             key={`link=${idx}`}
             href={navItem.link}
             className={cn(
-              "relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500"
+              "relative items-center flex space-x-1",
+              navStyles.link
             )}
           >
             <span className="block sm:hidden">{navItem.icon}</span>
-            <span className="text-sm !cursor-pointer">{navItem.name}</span>
+            <span className="text-sm !cursor-pointer" style={{ fontFamily: currentTheme === 'retro90s' ? 'MS Sans Serif, sans-serif' : currentTheme === 'transformers' ? 'Michroma, monospace' : currentTheme === 'cyberpunk' ? 'Share Tech Mono, monospace' : currentTheme === 'mickey' ? 'Times New Roman, serif' : 'inherit' }}>
+              {navItem.name}
+            </span>
           </Link>
         ))}
 
@@ -138,14 +195,20 @@ export const FloatingNav = ({
         <div className="relative">
           <button
             onClick={() => setShowThemeDropdown(!showThemeDropdown)}
-            className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200 border border-white/20 hover:border-white/30"
+            className={cn(
+              "flex items-center space-x-2 px-3 py-2 transition-all duration-200",
+              navStyles.button
+            )}
+            style={{ fontFamily: currentTheme === 'retro90s' ? 'MS Sans Serif, sans-serif' : currentTheme === 'transformers' ? 'Audiowide, monospace' : currentTheme === 'cyberpunk' ? 'Orbitron, monospace' : currentTheme === 'mickey' ? 'Times New Roman, serif' : 'inherit' }}
           >
             <span className="text-lg">{currentThemeData.icon}</span>
-            <span className="text-sm text-white hidden sm:block">{currentThemeData.name}</span>
+            <span className="text-sm hidden sm:block font-bold">
+              {currentTheme === 'retro90s' ? currentThemeData.name.toUpperCase() : currentThemeData.name}
+            </span>
             <motion.span
               animate={{ rotate: showThemeDropdown ? 180 : 0 }}
               transition={{ duration: 0.2 }}
-              className="text-white/70 text-xs"
+              className="text-xs opacity-70"
             >
               ▼
             </motion.span>
@@ -159,10 +222,13 @@ export const FloatingNav = ({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className="absolute top-full mt-2 right-0 min-w-[280px] bg-black/90 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl overflow-hidden z-50"
+                className={cn(
+                  "absolute top-full mt-2 right-0 min-w-[280px] overflow-hidden z-50",
+                  navStyles.dropdown
+                )}
               >
                 <div className="p-3">
-                  <div className="text-xs text-white/60 uppercase tracking-wider mb-3 px-2">
+                  <div className="text-xs uppercase tracking-wider mb-3 px-2 opacity-60" style={{ fontFamily: currentTheme === 'retro90s' ? 'MS Sans Serif, sans-serif' : 'inherit' }}>
                     Experience Versions
                   </div>
                   
@@ -173,25 +239,31 @@ export const FloatingNav = ({
                       className={cn(
                         "w-full flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 text-left",
                         currentTheme === theme.id
-                          ? "bg-white/20 border border-white/30"
-                          : "hover:bg-white/10 border border-transparent"
+                          ? "border opacity-100"
+                          : "border-transparent opacity-80 hover:opacity-100",
+                        navStyles.dropdownButton
                       )}
+                      style={{ fontFamily: currentTheme === 'retro90s' ? 'MS Sans Serif, sans-serif' : 'inherit' }}
                     >
                       <span className="text-2xl">{theme.icon}</span>
                       <div className="flex-1">
-                        <div className="text-white font-medium text-sm">{theme.name}</div>
-                        <div className="text-white/60 text-xs">{theme.description}</div>
+                        <div className="font-medium text-sm">
+                          {currentTheme === 'retro90s' ? theme.name.toUpperCase() : theme.name}
+                        </div>
+                        <div className="text-xs opacity-60">
+                          {currentTheme === 'retro90s' ? theme.description.toUpperCase() : theme.description}
+                        </div>
                       </div>
                       {currentTheme === theme.id && (
-                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                       )}
                     </button>
                   ))}
                 </div>
                 
                 <div className="px-3 pb-3">
-                  <div className="text-xs text-white/40 px-2">
-                    Switch between different visual experiences
+                  <div className="text-xs px-2 opacity-40" style={{ fontFamily: currentTheme === 'retro90s' ? 'MS Sans Serif, sans-serif' : 'inherit' }}>
+                    {currentTheme === 'retro90s' ? 'SWITCH BETWEEN DIFFERENT VISUAL EXPERIENCES' : 'Switch between different visual experiences'}
                   </div>
                 </div>
               </motion.div>
@@ -199,6 +271,72 @@ export const FloatingNav = ({
           </AnimatePresence>
         </div>
       </motion.div>
+
+      {/* Theme-specific CSS */}
+      <style jsx global>{`
+        /* Mickey Theme Nav Animations */
+        .theme-mickey nav button:hover {
+          animation: mickey-nav-bounce 0.6s ease-out !important;
+        }
+
+        @keyframes mickey-nav-bounce {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          25% { transform: translate(-2px, -2px) scale(1.05); }
+          50% { transform: translate(-3px, -3px) scale(1.1); }
+          75% { transform: translate(-2px, -2px) scale(1.05); }
+        }
+
+        /* Cyberpunk Theme Nav Effects */
+        .theme-cyberpunk nav {
+          position: relative;
+        }
+
+        .theme-cyberpunk nav::before {
+          content: '';
+          position: absolute;
+          inset: -2px;
+          background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff00, #ffff00, #00ffff);
+          background-size: 400% 400%;
+          animation: cyber-border-flow 3s ease infinite;
+          z-index: -1;
+          border-radius: inherit;
+        }
+
+        @keyframes cyber-border-flow {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+
+        /* Transformers Theme Nav Effects */
+        .theme-transformers nav button:hover {
+          animation: mech-nav-transform 0.8s ease-in-out !important;
+        }
+
+        @keyframes mech-nav-transform {
+          0%, 100% { transform: scale(1) rotate(0deg); }
+          25% { transform: scale(1.05) rotate(2deg); }
+          50% { transform: scale(1.1) rotate(0deg); }
+          75% { transform: scale(1.05) rotate(-2deg); }
+        }
+
+        /* Retro 90s Theme Nav Effects */
+        .theme-retro90s nav button:active {
+          border-style: inset !important;
+          background: #808080 !important;
+        }
+
+        .border-outset {
+          border-style: outset;
+        }
+
+        .border-inset {
+          border-style: inset;
+        }
+
+        .bg-silver {
+          background-color: #c0c0c0;
+        }
+      `}</style>
     </AnimatePresence>
   );
 };

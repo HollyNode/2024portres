@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { IoCopyOutline } from "react-icons/io5";
+import Image from "next/image";
 
 // Also install this npm i --save-dev @types/react-lottie
 import Lottie from "react-lottie";
 
 import { cn } from "@/lib/utils";
-
+import { ThemeVersion } from "../ThemeManager";
+import { getThemedText } from "@/data";
 
 import { BackgroundGradientAnimation } from "./GradientBg";
 import GridGlobe from "./GridGlobe";
@@ -39,11 +41,11 @@ export const BentoGridItem = ({
   id,
   title,
   description,
-  //   remove unecessary things here
   img,
   imgClassName,
   titleClassName,
   spareImg,
+  currentTheme = 'current',
 }: {
   className?: string;
   id: number;
@@ -53,9 +55,40 @@ export const BentoGridItem = ({
   imgClassName?: string;
   titleClassName?: string;
   spareImg?: string;
+  currentTheme?: ThemeVersion;
 }) => {
-  const leftLists = ["ReactJS", "Express", "Typescript"];
-  const rightLists = ["VueJS", "NuxtJS", "GraphQL"];
+  // Theme-aware tech stack lists
+  const getThemedTechStacks = () => {
+    switch (currentTheme) {
+      case 'mickey':
+        return {
+          leftLists: ["ReactJS Magic", "Express Fun", "Typescript Joy"],
+          rightLists: ["VueJS Smiles", "NuxtJS Glee", "GraphQL Wonder"]
+        };
+      case 'cyberpunk':
+        return {
+          leftLists: ["React.exe", "Express.dll", "TypeScript.bin"],
+          rightLists: ["Vue.sys", "Nuxt.core", "GraphQL.net"]
+        };
+      case 'transformers':
+        return {
+          leftLists: ["REACT-CORE", "EXPRESS-ENGINE", "TYPESCRIPT-ARMOR"],
+          rightLists: ["VUE-PROTOCOL", "NUXT-SYSTEM", "GRAPHQL-MATRIX"]
+        };
+      case 'retro90s':
+        return {
+          leftLists: ["REACTJS.HTML", "EXPRESS.CGI", "TYPESCRIPT.JS"],
+          rightLists: ["VUEJS.APPLET", "NUXTJS.FRAME", "GRAPHQL.XML"]
+        };
+      default:
+        return {
+          leftLists: ["ReactJS", "Express", "Typescript"],
+          rightLists: ["VueJS", "NuxtJS", "GraphQL"]
+        };
+    }
+  };
+
+  const { leftLists, rightLists } = getThemedTechStacks();
 
   const [copied, setCopied] = useState(false);
 
@@ -74,29 +107,93 @@ export const BentoGridItem = ({
     setCopied(true);
   };
 
+  // Theme-specific styling
+  const getThemeStyles = () => {
+    switch (currentTheme) {
+      case 'mickey':
+        return {
+          background: "linear-gradient(135deg, #8B0000 0%, #FFD700 50%, #000000 100%)",
+          borderColor: "border-yellow-400/30",
+          textColor: "text-yellow-100",
+          titleColor: "text-white",
+          stackBg: "bg-red-900/50",
+          buttonBg: "!bg-yellow-600/20",
+          fontFamily: "font-family: 'Comic Sans MS', cursive"
+        };
+      case 'cyberpunk':
+        return {
+          background: "linear-gradient(135deg, #000000 0%, #4A148C 50%, #00BCD4 100%)",
+          borderColor: "border-cyan-400/30",
+          textColor: "text-cyan-100",
+          titleColor: "text-cyan-300",
+          stackBg: "bg-purple-900/50",
+          buttonBg: "!bg-cyan-600/20",
+          fontFamily: "font-family: 'Orbitron', monospace"
+        };
+      case 'transformers':
+        return {
+          background: "linear-gradient(135deg, #2C2C2C 0%, #8B0000 50%, #FFD700 100%)",
+          borderColor: "border-yellow-400/30",
+          textColor: "text-yellow-100",
+          titleColor: "text-yellow-300",
+          stackBg: "bg-red-900/50",
+          buttonBg: "!bg-yellow-600/20",
+          fontFamily: "font-family: 'Audiowide', cursive"
+        };
+      case 'retro90s':
+        return {
+          background: "linear-gradient(135deg, #C0C0C0 0%, #800080 50%, #FF69B4 100%)",
+          borderColor: "border-white/50",
+          textColor: "text-black",
+          titleColor: "text-purple-900",
+          stackBg: "bg-white/30",
+          buttonBg: "!bg-purple-600/20",
+          fontFamily: "font-family: 'MS Sans Serif', sans-serif"
+        };
+      default:
+        return {
+          background: "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
+          borderColor: "border-white/[0.1]",
+          textColor: "text-[#C1C2D3]",
+          titleColor: "text-white",
+          stackBg: "bg-[#10132E]",
+          buttonBg: "!bg-[#161A31]",
+          fontFamily: "font-family: inherit"
+        };
+    }
+  };
+
+  const themeStyles = getThemeStyles();
+
+  // Theme-aware button text
+  const copyButtonText = getThemedText(
+    copied ? "Email is Copied!" : "Copy my email address",
+    currentTheme
+  );
+
   return (
     <div
       className={cn(
-        // remove p-4 rounded-3xl dark:bg-black dark:border-white/[0.2] bg-white  border border-transparent, add border border-white/[0.1] overflow-hidden relative
-        "row-span-1 relative overflow-hidden rounded-3xl border border-white/[0.1] group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none justify-between flex flex-col space-y-4",
+        "row-span-1 relative overflow-hidden rounded-3xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none justify-between flex flex-col space-y-4",
+        themeStyles.borderColor,
         className
       )}
       style={{
-        //   add these two
-        //   you can generate the color from here https://cssgradient.io/
-        background: "rgb(4,7,29)",
-        backgroundColor:
-          "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
+        background: themeStyles.background,
+        fontFamily: themeStyles.fontFamily
       }}
     >
       {/* add img divs */}
       <div className={`${id === 6 && "flex justify-center"} h-full`}>
         <div className="w-full h-full absolute">
           {img && (
-            <img
+            <Image
               src={img}
-              alt={img}
-              className={cn(imgClassName, "object-cover object-center ")}
+              alt={`Grid item ${id} image`}
+              width={400}
+              height={300}
+              className={cn(imgClassName, "object-cover object-center")}
+              priority={id <= 2}
             />
           )}
         </div>
@@ -105,10 +202,11 @@ export const BentoGridItem = ({
             } `}
         >
           {spareImg && (
-            <img
+            <Image
               src={spareImg}
-              alt={spareImg}
-              //   width={220}
+              alt={`Grid item ${id} spare image`}
+              width={220}
+              height={220}
               className="object-cover object-center w-full h-full"
             />
           )}
@@ -127,13 +225,13 @@ export const BentoGridItem = ({
           )}
         >
           {/* change the order of the title and des, font-extralight, remove text-xs text-neutral-600 dark:text-neutral-300 , change the text-color */}
-          <div className="font-sans font-extralight md:max-w-32 md:text-xs lg:text-base text-sm text-[#C1C2D3] z-10">
+          <div className={`font-sans font-extralight md:max-w-32 md:text-xs lg:text-base text-sm ${themeStyles.textColor} z-10`}>
             {description}
           </div>
           {/* add text-3xl max-w-96 , remove text-neutral-600 dark:text-neutral-300*/}
           {/* remove mb-2 mt-2 */}
           <div
-            className={`font-sans text-lg lg:text-3xl max-w-96 font-bold z-10`}
+            className={`font-sans text-lg lg:text-3xl max-w-96 font-bold z-10 ${themeStyles.titleColor}`}
           >
             {title}
           </div>
@@ -149,21 +247,21 @@ export const BentoGridItem = ({
                 {leftLists.map((item, i) => (
                   <span
                     key={i}
-                    className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
-                    lg:opacity-100 rounded-lg text-center bg-[#10132E]"
+                    className={`lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
+                    lg:opacity-100 rounded-lg text-center ${themeStyles.stackBg} ${themeStyles.textColor}`}
                   >
                     {item}
                   </span>
                 ))}
-                <span className="lg:py-4 lg:px-3 py-4 px-3  rounded-lg text-center bg-[#10132E]"></span>
+                <span className={`lg:py-4 lg:px-3 py-4 px-3 rounded-lg text-center ${themeStyles.stackBg}`}></span>
               </div>
               <div className="flex flex-col gap-3 md:gap-3 lg:gap-8">
-                <span className="lg:py-4 lg:px-3 py-4 px-3  rounded-lg text-center bg-[#10132E]"></span>
+                <span className={`lg:py-4 lg:px-3 py-4 px-3 rounded-lg text-center ${themeStyles.stackBg}`}></span>
                 {rightLists.map((item, i) => (
                   <span
                     key={i}
-                    className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
-                    lg:opacity-100 rounded-lg text-center bg-[#10132E]"
+                    className={`lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
+                    lg:opacity-100 rounded-lg text-center ${themeStyles.stackBg} ${themeStyles.textColor}`}
                   >
                     {item}
                   </span>
@@ -186,12 +284,12 @@ export const BentoGridItem = ({
               </div>
 
               <MagicButton
-  title={copied ? "Email is Copied!" : "Copy my email address"}
-  icon={<IoCopyOutline />}
-  position="left"
-  onClick={handleCopy}
-  className="!bg-[#161A31]"
-/>
+                title={copyButtonText}
+                icon={<IoCopyOutline />}
+                position="left"
+                onClick={handleCopy}
+                className={themeStyles.buttonBg}
+              />
             </div>
           )}
         </div>

@@ -255,11 +255,11 @@ export default function Home() {
             currentTheme={currentTheme}
             onThemeChange={handleThemeChange}
           />
-          <Hero />
-          <Grid />
-          <RecentProjects />
+          <Hero currentTheme={currentTheme} />
+          <Grid currentTheme={currentTheme} />
+          <RecentProjects currentTheme={currentTheme} />
           {/*<Clients />*/}
-          <Experience />
+          <Experience currentTheme={currentTheme} />
           {/*<Approach />*/}
           <Footer />
         </div>

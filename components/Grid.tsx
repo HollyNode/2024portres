@@ -1,7 +1,14 @@
-import { gridItems } from "@/data";
+import { getThemedGridItems } from "@/data";
 import { BentoGrid, BentoGridItem } from "./ui/BentoGrid";
+import { ThemeVersion } from "./ThemeManager";
 
-const Grid = () => {
+interface GridProps {
+  currentTheme?: ThemeVersion;
+}
+
+const Grid = ({ currentTheme = 'current' }: GridProps) => {
+  const gridItems = getThemedGridItems(currentTheme);
+
   return (
     <section id="about">
       <BentoGrid className="w-full py-20">
@@ -11,13 +18,12 @@ const Grid = () => {
             key={i}
             title={item.title}
             description={item.description}
-            // remove icon prop
-            // remove original classname condition
             className={item.className}
             img={item.img}
             imgClassName={item.imgClassName}
             titleClassName={item.titleClassName}
             spareImg={item.spareImg}
+            currentTheme={currentTheme} // THIS WAS MISSING!
           />
         ))}
       </BentoGrid>
