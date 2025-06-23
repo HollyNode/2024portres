@@ -213,7 +213,7 @@ export const BentoGridItem = ({
         </div>
         {id === 6 && (
           // add background animation , remove the p tag
-          <BackgroundGradientAnimation>
+          <BackgroundGradientAnimation currentTheme={currentTheme}>
             <div className="absolute z-50 inset-0 flex items-center justify-center text-white font-bold px-4 pointer-events-none text-3xl text-center md:text-4xl lg:text-7xl"></div>
           </BackgroundGradientAnimation>
         )}
@@ -237,7 +237,7 @@ export const BentoGridItem = ({
           </div>
 
           {/* for the github 3d globe */}
-          {id === 2 && <GridGlobe />}
+          {id === 2 && <GridGlobe currentTheme={currentTheme} />}
 
           {/* Tech stack list div */}
           {id === 3 && (
@@ -283,13 +283,14 @@ export const BentoGridItem = ({
                 <Lottie options={defaultOptions} height={200} width={400} />
               </div>
 
-              <MagicButton
-                title={copyButtonText}
-                icon={<IoCopyOutline />}
-                position="left"
-                onClick={handleCopy}
-                className={themeStyles.buttonBg}
-              />
+             <MagicButton
+  title={copyButtonText}
+  icon={<IoCopyOutline />}
+  position="left"
+  onClick={handleCopy}
+  className={themeStyles.buttonBg}
+  currentTheme={currentTheme}
+/>
             </div>
           )}
         </div>

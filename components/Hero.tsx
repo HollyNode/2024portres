@@ -31,35 +31,35 @@ const Hero = ({ currentTheme = 'current' }: HeroProps) => {
     switch (currentTheme) {
       case 'mickey':
         return {
-          containerClass: "relative min-h-screen overflow-hidden bg-gradient-to-br from-red-900 via-yellow-900 to-black",
+          containerClass: "relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-gray-800 to-gray-900",
           fontFamily: "font-family: 'Comic Sans MS', cursive",
-          accentColor: "text-yellow-300",
-          primaryGradient: "from-yellow-400 to-red-400",
-          badgeGradient: "from-yellow-400 to-red-400",
-          pillHover: "hover:border-yellow-500/50 hover:bg-yellow-500/10",
-          // Background elements theming
-          backgroundOverlay: "bg-gradient-to-t from-red-950 via-red-950/80 to-transparent",
+          accentColor: "text-white",
+          primaryGradient: "from-white to-gray-300",
+          badgeGradient: "from-white to-gray-300",
+          pillHover: "hover:border-white/50 hover:bg-white/10",
+          // Background elements theming - Smokey steamboat effects
+          backgroundOverlay: "bg-gradient-to-t from-black via-gray-900/90 to-transparent",
           floatingOrbs: {
-            orb1: "bg-yellow-500/30", // Mickey yellow
-            orb2: "bg-red-500/30",    // Mickey red
-            orb3: "bg-black/40",      // Mickey black
+            orb1: "bg-white/20 animate-smoke-puff", // White smoke puff
+            orb2: "bg-gray-400/30 animate-smoke-drift", // Gray smoke drift
+            orb3: "bg-gray-600/25 animate-smoke-swirl", // Dark smoke swirl
           },
           spotlights: {
             spot1: "white",
-            spot2: "yellow", 
-            spot3: "red"
+            spot2: "gray", 
+            spot3: "white"
           },
-          badgeStyle: "border-yellow-500/20 bg-yellow-500/10",
+          badgeStyle: "border-white/30 bg-white/10 shadow-[4px_4px_0px_rgba(0,0,0,0.8)] border-2 border-black",
           textColors: {
-            subtitle: "text-yellow-100",
-            subtitleSecondary: "text-yellow-200/80"
+            subtitle: "text-white drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]",
+            subtitleSecondary: "text-gray-300 drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]"
           },
           iconColors: {
-            code: "text-yellow-400",
-            zap: "text-red-400",
-            globe: "text-yellow-300"
+            code: "text-white",
+            zap: "text-gray-300",
+            globe: "text-white"
           },
-          scrollIndicator: "text-yellow-400"
+          scrollIndicator: "text-white drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]"
         };
       case 'cyberpunk':
         return {
@@ -200,10 +200,32 @@ const Hero = ({ currentTheme = 'current' }: HeroProps) => {
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]" />
       <div className={`absolute inset-0 ${themeStyles.backgroundOverlay}`} />
       
-      {/* Themed Floating Orbs */}
-      <div className={`absolute top-20 left-10 w-72 h-72 ${themeStyles.floatingOrbs.orb1} rounded-full blur-3xl animate-pulse`} />
-      <div className={`absolute top-40 right-10 w-96 h-96 ${themeStyles.floatingOrbs.orb2} rounded-full blur-3xl animate-pulse delay-1000`} />
-      <div className={`absolute bottom-20 left-1/3 w-80 h-80 ${themeStyles.floatingOrbs.orb3} rounded-full blur-3xl animate-pulse delay-2000`} />
+      {/* Themed Floating Orbs / Smoke Effects */}
+      <div className={`absolute top-20 left-10 w-72 h-72 ${themeStyles.floatingOrbs.orb1} rounded-full blur-3xl ${currentTheme === 'mickey' ? 'animate-smoke-puff' : 'animate-pulse'}`} />
+      <div className={`absolute top-40 right-10 w-96 h-96 ${themeStyles.floatingOrbs.orb2} rounded-full blur-3xl ${currentTheme === 'mickey' ? 'animate-smoke-drift delay-1000' : 'animate-pulse delay-1000'}`} />
+      <div className={`absolute bottom-20 left-1/3 w-80 h-80 ${themeStyles.floatingOrbs.orb3} rounded-full blur-3xl ${currentTheme === 'mickey' ? 'animate-smoke-swirl delay-2000' : 'animate-pulse delay-2000'}`} />
+      
+      {/* Mickey Theme: Additional Steamboat Smoke Effects */}
+      {currentTheme === 'mickey' && (
+        <>
+          {/* Steamboat smoke stacks */}
+          <div className="absolute top-10 left-1/4 w-4 h-32 bg-gradient-to-t from-gray-800 to-transparent opacity-60" />
+          <div className="absolute top-10 left-1/3 w-4 h-32 bg-gradient-to-t from-gray-700 to-transparent opacity-40" />
+          
+          {/* Animated smoke puffs from stacks */}
+          <div className="absolute top-8 left-1/4 w-12 h-12 bg-white/30 rounded-full blur-md animate-smoke-puff-small" />
+          <div className="absolute top-6 left-1/3 w-16 h-16 bg-gray-400/25 rounded-full blur-lg animate-smoke-puff-medium delay-500" />
+          <div className="absolute top-4 left-[30%] w-20 h-20 bg-gray-600/20 rounded-full blur-xl animate-smoke-puff-large delay-1000" />
+          
+          {/* Floating smoke particles */}
+          <div className="absolute top-32 left-[25%] w-8 h-8 bg-white/20 rounded-full blur-sm animate-float-up" />
+          <div className="absolute top-28 left-[32%] w-6 h-6 bg-gray-400/25 rounded-full blur-sm animate-float-up delay-300" />
+          <div className="absolute top-36 left-[29%] w-10 h-10 bg-gray-500/15 rounded-full blur-md animate-float-up delay-700" />
+          
+          {/* Steam whistle effect */}
+          <div className="absolute top-16 left-[27%] w-2 h-8 bg-white/40 blur-sm animate-steam-whistle" />
+        </>
+      )}
 
       {/* Themed Spotlights */}
       <Spotlight className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen" fill={themeStyles.spotlights.spot1} />
@@ -295,6 +317,161 @@ const Hero = ({ currentTheme = 'current' }: HeroProps) => {
 
         </div>
       </div>
+      
+      {/* Mickey Theme Smoke Animations */}
+      <style jsx>{`
+        @keyframes smoke-puff {
+          0% { 
+            transform: scale(0.8) translateY(0px);
+            opacity: 0.7;
+          }
+          50% { 
+            transform: scale(1.2) translateY(-20px);
+            opacity: 0.4;
+          }
+          100% { 
+            transform: scale(1.5) translateY(-40px);
+            opacity: 0.1;
+          }
+        }
+        
+        @keyframes smoke-drift {
+          0% { 
+            transform: translateX(0px) translateY(0px) scale(1);
+            opacity: 0.6;
+          }
+          33% { 
+            transform: translateX(20px) translateY(-15px) scale(1.1);
+            opacity: 0.4;
+          }
+          66% { 
+            transform: translateX(-10px) translateY(-25px) scale(1.3);
+            opacity: 0.2;
+          }
+          100% { 
+            transform: translateX(30px) translateY(-40px) scale(1.5);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes smoke-swirl {
+          0% { 
+            transform: rotate(0deg) scale(1) translateY(0px);
+            opacity: 0.5;
+          }
+          25% { 
+            transform: rotate(90deg) scale(1.1) translateY(-10px);
+            opacity: 0.4;
+          }
+          50% { 
+            transform: rotate(180deg) scale(1.3) translateY(-20px);
+            opacity: 0.3;
+          }
+          75% { 
+            transform: rotate(270deg) scale(1.4) translateY(-30px);
+            opacity: 0.2;
+          }
+          100% { 
+            transform: rotate(360deg) scale(1.6) translateY(-50px);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes smoke-puff-small {
+          0% { 
+            transform: scale(0.5) translateY(0px);
+            opacity: 0.8;
+          }
+          100% { 
+            transform: scale(2) translateY(-100px);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes smoke-puff-medium {
+          0% { 
+            transform: scale(0.7) translateY(0px);
+            opacity: 0.6;
+          }
+          100% { 
+            transform: scale(2.5) translateY(-120px);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes smoke-puff-large {
+          0% { 
+            transform: scale(0.8) translateY(0px);
+            opacity: 0.5;
+          }
+          100% { 
+            transform: scale(3) translateY(-150px);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes float-up {
+          0% { 
+            transform: translateY(0px);
+            opacity: 0.6;
+          }
+          100% { 
+            transform: translateY(-200px);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes steam-whistle {
+          0%, 80% { 
+            opacity: 0;
+            transform: scaleY(1);
+          }
+          85% { 
+            opacity: 1;
+            transform: scaleY(1.5);
+          }
+          90% { 
+            opacity: 0.8;
+            transform: scaleY(2);
+          }
+          100% { 
+            opacity: 0;
+            transform: scaleY(0.5);
+          }
+        }
+        
+        .animate-smoke-puff {
+          animation: smoke-puff 4s ease-out infinite;
+        }
+        
+        .animate-smoke-drift {
+          animation: smoke-drift 6s ease-in-out infinite;
+        }
+        
+        .animate-smoke-swirl {
+          animation: smoke-swirl 8s linear infinite;
+        }
+        
+        .animate-smoke-puff-small {
+          animation: smoke-puff-small 3s ease-out infinite;
+        }
+        
+        .animate-smoke-puff-medium {
+          animation: smoke-puff-medium 4s ease-out infinite;
+        }
+        
+        .animate-smoke-puff-large {
+          animation: smoke-puff-large 5s ease-out infinite;
+        }
+        
+        .animate-float-up {
+          animation: float-up 6s linear infinite;
+        }
+        
+        .animate-steam-whistle {
+          animation: steam-whistle 8s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 };
