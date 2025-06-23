@@ -32,6 +32,7 @@ export default function Home() {
   const [hasUsedKonami, setHasUsedKonami] = useState(false);
   const toastTimeoutRef = useRef<NodeJS.Timeout>();
   
+  // Define Konami code outside of useEffect to avoid dependency warning
   const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
 
   // Handle theme changes
@@ -96,7 +97,7 @@ export default function Home() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [keySequence]);
+  }, [keySequence, konamiCode]); // Added konamiCode to dependencies
 
   const ContraToast = () => (
     <div className="fixed bottom-6 right-6 z-40 animate-slide-in">
@@ -166,7 +167,7 @@ export default function Home() {
               <div className="inline-block">
                 <h1 className="text-5xl font-thin text-white mb-2 tracking-widest">
                   <span className="bg-gradient-to-r from-pink-400 via-orange-300 to-pink-400 bg-clip-text text-transparent">
-                    CHEF'S
+                    CHEF&apos;S
                   </span>
                 </h1>
                 <h2 className="text-6xl font-bold text-white mb-4 tracking-wider">

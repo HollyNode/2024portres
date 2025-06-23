@@ -49,7 +49,7 @@ export default function MickeyToast({ onClose }: MickeyToastProps) {
             Welcome to the <span className="text-lg font-black">STEAMBOAT WILLIE</span> era!
           </div>
           <div className="text-xs italic text-gray-700">
-            "That's all folks!" - 1928 animation style ♪
+            &ldquo;That&apos;s all folks!&rdquo; - 1928 animation style ♪
           </div>
         </div>
         

@@ -82,10 +82,10 @@ export default function Retro90sToast({ onClose }: Retro90sToastProps) {
         {/* Message with 90s styling */}
         <div className="mb-3" style={{ fontFamily: 'MS Sans Serif, sans-serif' }}>
           <div className="text-black font-bold mb-2 text-sm">
-            You've entered the <span className="retro-blink text-magenta-600">WORLD WIDE WEB</span>!
+            You&apos;ve entered the <span className="retro-blink text-magenta-600">WORLD WIDE WEB</span>!
           </div>
           <div className="text-black text-xs leading-relaxed">
-            Experience the internet like it's 1995! Complete with visitor counters, under construction banners, and web-safe colors! 🌐💾
+            Experience the internet like it&apos;s 1995! Complete with visitor counters, under construction banners, and web-safe colors! 🌐💾
           </div>
         </div>
         
